@@ -18,6 +18,11 @@
       when: '"manager" in group_names'
       notify:
         - run docker stack
+
+    - name: Install jsondiff
+      pip:
+        name: jsondiff
+        state: present    
       
 
 
