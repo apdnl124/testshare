@@ -17,12 +17,7 @@
       action: copy src=./nginx2.yml dest=/home/user1/share
       when: '"manager" in group_names'
       notify:
-        - run docker stack
-
-    - name: Install jsondiff
-      pip:
-        name: jsondiff
-        state: present    
+        - run docker stack    
       
 
 
