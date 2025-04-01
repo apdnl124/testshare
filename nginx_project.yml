@@ -1,0 +1,43 @@
+- name: setup
+  hosts: all
+  become: true
+  
+  tasks:
+    - name: add private registry ip to insecure-registries
+      lineinfile:
+        path: /etc/docker/daemon.json
+        create: true
+        regexp: '"insecure-registries":'
+        line: '    "insecure-registries": ["211.183.3.201:5000"]'
+      notify:
+        - restart docker
+
+        
+    - name: copy docker stack file
+      action: copy src=/home/user1/share/nginx2.yml dest=/home/user1/share
+      notify:
+        - run docker stack
+      when: '"manager" in group_names'
+
+
+    - name: pull docker image from private registry
+      docker_image:
+        pull: 211.183.3.201:5000/mynginx:1.0
+        source: pull
+      when: "'workers' in group_names"
+
+
+
+
+
+  handlers:
+    - name: restart docker
+      service:
+        name: docker
+        state: restarted
+
+    - name: run docker stack
+      docker_stack:
+        state: present
+        name: mynginx
+        compose: /home/user1/share/nginx2.yml

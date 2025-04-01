@@ -1,0 +1,7 @@
+[manager]
+211.183.3.201
+
+[workers]
+worker1 ansible_host=211.183.3.202
+worker2 ansible_host=211.183.3.203
+worker3 ansible_host=211.183.3.204
