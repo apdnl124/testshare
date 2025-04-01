@@ -15,9 +15,10 @@
         
     - name: copy docker stack file
       action: copy src=./nginx2.yml dest=/home/user1/share
+      when: '"manager" in group_names'
       notify:
         - run docker stack
-      when: '"manager" in group_names'
+      
 
 
     - name: pull docker image from private registry
